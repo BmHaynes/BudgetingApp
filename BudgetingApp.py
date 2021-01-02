@@ -1,12 +1,13 @@
 import sqlite3 as sq
+import datetime
 
 con = sq.connect("Budgetingapp.db")
 c = con.cursor()
 
 # create bill and paycheck table
 try:
-    c.execute('''CREATE TABLE bills (name TEXT, expected_amount REAL, amount REAL, date TEXT, completed INTEGER)''')
-    c.execute('''CREATE TABLE paycheck (name TEXT, expected_amount REAL, amount REAL, date TEXT)''')
+    c.execute('''CREATE TABLE bills (name TEXT, expected_amount REAL, amount REAL, date INTEGER, completed INTEGER)''')
+    c.execute('''CREATE TABLE paycheck (name TEXT, expected_amount REAL, amount REAL, date INTEGER)''')
 except:
     print("Tables are already created")
 
@@ -17,7 +18,7 @@ def add_paycheck():
     name = input('name on paycheck: ')
     expected_amount = float(input('expected paycheck amount: '))
     amount = float(input('paycheck amount: '))
-    date = str(input('payday: '))
+    date = datetime.date(2021, int(input("month: ")), int(input("day: ")))
     paycheck = """INSERT INTO paycheck (name, expected_amount, amount, date)
                 VALUES ('{}', '{}', '{}', '{}')""".format(name, expected_amount, amount, date)
     c.execute(paycheck)
@@ -29,25 +30,24 @@ def add_bill():
     name = input('name: ')
     expected_amount = float(input('expected amount: '))
     amount = float(input('amount: '))
-    date = str(input('date: '))
+    date = datetime.date(2021, int(input("month: ")), int(input("day: ")))
     completed = input('Has it been paid? Y/N: ')
-    if completed == "y" or "yes":
-        completed = True
+    if completed == "y":
+        completed = "True"
         print('you selected true')
-    elif completed == "n" or "no":
-        completed = False
+    elif completed == "n":
+        completed = "False"
         print('you selected false')
     else:
         print("invalid input")
 
     bill = """INSERT INTO bills (name, expected_amount, amount, date, completed)
                VALUES ('{}', '{}', '{}', '{}', '{}')""".format(name, expected_amount, amount, date, completed)
-    #    bill = """INSERT INTO bills (name, expected_amount, amount, date, completed)
-    #                VALUES (f'{name}', '{expected_amount}', '{amount}', '{date}', '{completed}')"""
+
     c.execute(bill)
     con.commit()
 
-
+    print(completed)
 def sum_of_paycheck():
     c.execute("SELECT amount FROM paycheck;")
     columns = c.fetchall()
@@ -104,14 +104,11 @@ def check_if_paid():
 def paid():
     c.execute("SELECT name, completed FROM bills ORDER BY completed ASC;")
     b = c.fetchall()
-    t = []
     for name, yn in b:
         if yn == 'False':
             print(name + " is not paid yet.")
-            return [name, "False"]
         if yn == 'True':
-            print(name + " has been paid this month")
-            return [name, "True"]
+            print(name + " has been paid this month.")
 
 
 def main():
@@ -125,6 +122,7 @@ def main():
                        "6. see expected bills\n"
                        "7. see expected paychecks\n"
                        "8. see what has been paid\n"
+                       "9. Print unpaid\n"
                        "0. exit\n"
                        "what do you want to do? ")
 
@@ -152,6 +150,9 @@ def main():
         elif option == "8":
             print(paid())
 
+        elif option == "9":
+            see_all()
+
         elif option == "0":
             return False
 
@@ -160,12 +161,13 @@ def see_all():
     c.execute('SELECT * FROM bills')
     print(c.fetchall())
     c.execute('SELECT * FROM paycheck')
+    print(c.fetchall())
 
 
 # see_all()
-# paid()
-# main()
-# check_if_paid()
+#paid()
+main()
+check_if_paid()
 # add_bill()
 # add_paycheck()
 # print(sum_of_bill())
