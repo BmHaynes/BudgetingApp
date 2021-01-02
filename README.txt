@@ -3,7 +3,7 @@ I plan on making a gui for it and constantly adding new features.
 alot of this is broken but I am doing my best to keep what works visable and broken stuff local.
 If you read this a look at my code please note that im new and self taught.
 I am happy to get feedback and critisim.
-
+IGNORE ALGORITHIMS.py! just thought process lol
 
 ---About the App---
 
