@@ -11,26 +11,6 @@ except:
     print("Tables are already created")
 
 
-class Bills:
-    pass
-
-
-class Paycheck:
-    pass
-
-
-class Budgeting:
-    pass
-
-
-class DB:
-    def __init__(self, name, expected_amount, amount, date, completed):
-        self.name = name
-        self.expected_amount = expected_amount
-        self.amount = amount
-        self.date = date
-        self.completed = completed
-
 
 # add paycheck self, name, expected_amount, amount, date
 def add_paycheck():

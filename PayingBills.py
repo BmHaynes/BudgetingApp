@@ -12,7 +12,7 @@ def pay_internet():
     driver.get(
         "https://authorize.suddenlink.net/saml/module.php/authSynacor/login.php?AuthState=_bf3a0d9cf8458c3d7048bd97804558210f3190c6be%3Ahttps%3A%2F%2Fauthorize.suddenlink.net%2Fsaml%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Daccount.suddenlink.net%26cookieTime%3D1608688025%26allowCreate%3D0")
     login = driver.find_element_by_css_selector("input#username")
-    login.send_keys(PassUsers.suddenlinuser)
+    login.send_keys(PassUsers.suddenlinkuser)
     password = driver.find_element_by_css_selector("input#password")
     password.send_keys(PassUsers.suddenlinkpass, Keys.ENTER)
     driver.get("https://account.suddenlink.net/my-account/mybill/payment.html")
