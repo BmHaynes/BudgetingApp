@@ -1,4 +1,5 @@
 import sqlite3 as sq
+from PayingBills import *
 
 # tracking when to pay each bill
 
@@ -30,7 +31,7 @@ def duedate():
     bills_first_payday = []
     bills_second_payday = []
 
-    #paycheck sorted by day
+    # paycheck sorted by day
     first_payday = int(pay_day[0][1][-2:])
     last_payday = int(pay_day[-1][1][-2:])
 
@@ -67,8 +68,6 @@ def duedate():
     # print(all_first_checks_total)
     # print(all_second_checks_total)
 
-
-
     # moving overflow of first bills to second list to keep from overdrafting
     # buffer is the amount of money you want left over. idealy should be zero
     buffer = 0
@@ -77,23 +76,35 @@ def duedate():
         if (bills_first_payday_total + buffer) <= (all_first_checks_total):
             bills_second_payday.append(bills_first_payday[0])
 
-        elif (bills_first_payday_total + buffer) <= (all_second_checks_total):
+        elif (bills_second_payday_total + buffer) <= (all_second_checks_total):
             bills_first_payday.append(bills_second_payday[0])
         else:
             print("you did not make enough to pay all the bills")
     # print(bills_first_payday)
     # print(bills_second_payday)
 
-
-
-
-
     return bills_first_payday, bills_second_payday, all_first_checks_total, all_second_checks_total
 
 
-duedate()
-
 bills_first_payday, bills_second_payday, all_first_checks_total, all_second_checks_total = duedate()
+
+
+# format the bill from the list to the paying bills function
+def pay_this_payday_bills():
+    for name in bills_first_payday:
+        print(name[0])
+        if name[0] == "water":
+            PayingBills.pay_water()
+        elif name[0] == "electric":
+            PayingBills.pay_electric()
+        elif name[0] == "phone":
+            PayingBills.pay_verizon()
+        elif name[0] == "house":
+            PayingBills.pay_house()
+        elif name[0] == "truck":
+            PayingBills.pay_truck()
+
+
 
 
 # maybe make it so instead of filling up the first check then having money left over on the second, split the

@@ -1,4 +1,3 @@
-import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -65,14 +64,15 @@ def pay_gas():
 def pay_house():
     pass
 
+def pay_truck():
+    pass
+
 def pay_B_cap_one():
     pass
 
 
 
 
-# pay_internet()
-# pay_electric()
-# pay_verizon()
-# pay_water()
-# driver.close()
+
+driver.close()
+

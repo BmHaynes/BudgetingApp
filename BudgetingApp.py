@@ -1,6 +1,6 @@
 import sqlite3 as sq
 import datetime
-import algorithims
+import algorithms
 
 con = sq.connect("Budgetingapp.db")
 c = con.cursor()
@@ -13,16 +13,14 @@ except:
     print("Tables are already created")
 
 
-
 # add paycheck self, name, expected_amount, amount, date
 def add_paycheck():
     name = input('name on paycheck: ')
     expected_amount = float(input('expected paycheck amount: '))
     amount = float(input('paycheck amount: '))
     date = datetime.date(2021, int(input("month: ")), int(input("day: ")))
-    paycheck = """INSERT INTO paycheck (name, expected_amount, amount, date)
-                VALUES ('{}', '{}', '{}', '{}')""".format(name, expected_amount, amount, date)
-    c.execute(paycheck)
+    c.execute("""INSERT INTO paycheck (name, expected_amount, amount, date)
+                VALUES (?, ?, ?, ?)""", (name, expected_amount, amount, date))
     con.commit()
 
 
@@ -42,13 +40,14 @@ def add_bill():
     else:
         print("invalid input")
 
-    bill = """INSERT INTO bills (name, expected_amount, amount, date, completed)
-               VALUES ('{}', '{}', '{}', '{}', '{}')""".format(name, expected_amount, amount, date, completed)
+    c.execute("""INSERT INTO bills (name, expected_amount, amount, date, completed)
+               VALUES (?, ?, ?, ?, ?)""", (name, expected_amount, amount, date, completed))
 
-    c.execute(bill)
     con.commit()
 
     print(completed)
+
+
 def sum_of_paycheck():
     c.execute("SELECT amount FROM paycheck;")
     columns = c.fetchall()
@@ -96,12 +95,6 @@ def difference_bill_and_paycheck():
     print((sum_of_paycheck() - sum_of_bill()))
 
 
-def check_if_paid():
-    c.execute("SELECT name, completed FROM bills;")
-    completed = c.fetchall()
-    print(completed)
-
-
 def paid():
     c.execute("SELECT name, completed FROM bills ORDER BY completed ASC;")
     b = c.fetchall()
@@ -112,6 +105,23 @@ def paid():
             print(name + " has been paid this month.")
 
 
+def delete_bill():
+    c.execute("""SELECT name FROM bills""")
+    print(c.fetchall())
+    remove = input("which bill needs removed? ")
+    bill = ("""DELETE FROM bills WHERE name=?""", remove)
+    c.execute(bill)
+    print("Bill Deleted")
+
+
+def delete_paychecks():
+    remove = input("which paycheck needs removed? ")
+    check = ("""DELETE FROM paycheck WHERE name=?""", remove)
+    c.execute(check)
+    print("Check Deleted")
+
+
+
 def main():
     while True:
         option = input("what do you want to do?\n"
@@ -119,11 +129,11 @@ def main():
                        "2. add paycheck\n"
                        "3. see total of monthly bill\n"
                        "4. see total paychecks for the month\n"
-                       "5. see bill to chek differance\n"
-                       "6. see expected bills\n"
-                       "7. see expected paychecks\n"
+                       "5. see bill to check differance\n"
+                       "6. Delete bill\n"
+                       "7. Delete paychecks\n"
                        "8. see what will be paid when\n"
-                       "9. Print unpaid\n"
+                       "9. Pay this paychecks bills\n"
                        "0. exit\n"
                        "what do you want to do? ")
 
@@ -155,41 +165,33 @@ def main():
             print(difference_bill_and_paycheck())
 
         elif option == "6":
-            print(expected_sum_of_bill())
+            delete_bill()
 
         elif option == "7":
-            print(sum_of_expected_paycheck())
+            delete_paychecks()
 
         elif option == "8":
             print("")
             print("this payday")
-            print("together this payday you will bring home "+ str(algorithims.all_first_checks_total))
-            print(algorithims.bills_first_payday)
-            print("for a total of " + str(sum(x[-1] for x in algorithims.bills_first_payday)))
+            print("together this payday you will bring home " + str(algorithms.all_first_checks_total))
+            print(algorithms.bills_first_payday)
+            print("for a total of " + str(sum(x[-1] for x in algorithms.bills_first_payday)))
             print("next payday ")
-            print("together next payday you will bring home " + str(algorithims.all_second_checks_total))
-            print(algorithims.bills_second_payday)
-            print("for a total of " + str(sum(x[-1] for x in algorithims.bills_second_payday)))
+            print("together next payday you will bring home " + str(algorithms.all_second_checks_total))
+            print(algorithms.bills_second_payday)
+            print("for a total of " + str(sum(x[-1] for x in algorithms.bills_second_payday)))
             print("")
 
         elif option == "9":
-            see_all()
+            algorithms.pay_this_payday_bills()
 
         elif option == "0":
             return False
 
 
-def see_all():
-    c.execute('SELECT * FROM bills')
-    print(c.fetchall())
-    c.execute('SELECT * FROM paycheck')
-    print(c.fetchall())
-
-
-# see_all()
-#paid()
+# paid()
 main()
-#check_if_paid()
+# check_if_paid()
 # add_bill()
 # add_paycheck()
 # print(sum_of_bill())
@@ -200,5 +202,3 @@ main()
 con.commit()
 # close connection
 con.close()
-
-# use paycheck history to orginize which bills should be paid with which check

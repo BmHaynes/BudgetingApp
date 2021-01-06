@@ -3,3 +3,4 @@ app.py
 Budgetingapp.db
 /.idea
 /__pycache__
+debug.log
