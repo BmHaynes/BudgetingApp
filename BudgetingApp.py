@@ -1,5 +1,6 @@
 import sqlite3 as sq
 import datetime
+import algorithims
 
 con = sq.connect("Budgetingapp.db")
 c = con.cursor()
@@ -121,19 +122,31 @@ def main():
                        "5. see bill to chek differance\n"
                        "6. see expected bills\n"
                        "7. see expected paychecks\n"
-                       "8. see what has been paid\n"
+                       "8. see what will be paid when\n"
                        "9. Print unpaid\n"
                        "0. exit\n"
                        "what do you want to do? ")
 
         if option == "1":
+            print("")
+            print("")
             add_bill()
+            print("")
+            print("")
 
         elif option == "2":
+            print("")
+            print("")
             add_paycheck()
+            print("")
+            print("")
 
         elif option == "3":
+            print("")
+            print("")
             print(sum_of_bill())
+            print("")
+            print("")
 
         elif option == "4":
             print(sum_of_paycheck())
@@ -148,7 +161,16 @@ def main():
             print(sum_of_expected_paycheck())
 
         elif option == "8":
-            print(paid())
+            print("")
+            print("this payday")
+            print("together this payday you will bring home "+ str(algorithims.all_first_checks_total))
+            print(algorithims.bills_first_payday)
+            print("for a total of " + str(sum(x[-1] for x in algorithims.bills_first_payday)))
+            print("next payday ")
+            print("together next payday you will bring home " + str(algorithims.all_second_checks_total))
+            print(algorithims.bills_second_payday)
+            print("for a total of " + str(sum(x[-1] for x in algorithims.bills_second_payday)))
+            print("")
 
         elif option == "9":
             see_all()
@@ -167,7 +189,7 @@ def see_all():
 # see_all()
 #paid()
 main()
-check_if_paid()
+#check_if_paid()
 # add_bill()
 # add_paycheck()
 # print(sum_of_bill())

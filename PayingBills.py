@@ -73,6 +73,6 @@ def pay_B_cap_one():
 
 # pay_internet()
 # pay_electric()
-pay_verizon()
+# pay_verizon()
 # pay_water()
 # driver.close()
