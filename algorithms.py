@@ -1,5 +1,5 @@
 import sqlite3 as sq
-from PayingBills import *
+import PayingBills
 
 # tracking when to pay each bill
 
@@ -80,12 +80,12 @@ def duedate():
             bills_first_payday.append(bills_second_payday[0])
         else:
             print("you did not make enough to pay all the bills")
-    # print(bills_first_payday)
-    # print(bills_second_payday)
+    print(bills_first_payday)
+    print(bills_second_payday)
 
     return bills_first_payday, bills_second_payday, all_first_checks_total, all_second_checks_total
 
-
+duedate()
 bills_first_payday, bills_second_payday, all_first_checks_total, all_second_checks_total = duedate()
 
 
